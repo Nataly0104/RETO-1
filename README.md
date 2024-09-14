@@ -14,6 +14,7 @@ Uso de C++ Avanzado: Implementación con punteros, arreglos y memoria dinámica.
 
 
 Descripción del Diagrama de Flujo
+
 Inicio: El programa comienza su ejecución.
 Configuración Inicial:
 Inicializa la pantalla LCD.
