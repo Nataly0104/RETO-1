@@ -13,7 +13,7 @@ Visualización de Datos: Resultados mostrados en una pantalla LCD.
 Uso de C++ Avanzado: Implementación con punteros, arreglos y memoria dinámica.
 
 
-escripción del Diagrama de Flujo
+Descripción del Diagrama de Flujo
 Inicio: El programa comienza su ejecución.
 Configuración Inicial:
 Inicializa la pantalla LCD.
