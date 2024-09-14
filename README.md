@@ -11,3 +11,5 @@ Manejo de Interrupciones: Pulsadores controlan el inicio, pausa y análisis de l
 Procesamiento de Señales: Algoritmos para calcular frecuencia, amplitud e identificar la forma de onda.
 Visualización de Datos: Resultados mostrados en una pantalla LCD.
 Uso de C++ Avanzado: Implementación con punteros, arreglos y memoria dinámica.
+
+
