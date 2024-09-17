@@ -26,7 +26,7 @@ Este   tiene como objetivo  afianzar conceptos de programacion, logica de progra
    ![image](https://github.com/user-attachments/assets/696a9af4-038c-4370-98f6-4fa09b0999e7)
 *   Ajustar el tamaño del buffer (`tamañoBuffer`) según la longitud de la señal que deseas capturar, en este caso seran 1024( Este valor de 1024 permite capturar un espacio importante de información de las señales,  sin completer una proporcion significativa del tamayo del arduino.
 *   
-## Algotirmo Generarizado 
+## Algoritmo Generalizado 
 
 *   Implementar la lectura de la señal analógica en la función `loop()`.
 *   Implementar los algoritmos de análisis en la función 
