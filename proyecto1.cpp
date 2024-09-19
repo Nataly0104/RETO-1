@@ -9,27 +9,22 @@ const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 // Variables para la adquisición y análisis de la señal
-const int analogPin = A0;          
+const int analogPin = A0;        
 
-// Tamaño reducido del buffer circular (ajusta según  necesidades)
-const int BUFFER_SIZE = 500;  
-int signalBuffer[BUFFER_SIZE]; // Usamos 'byte' en lugar de 'int' para ahorrar memoria
+// Tamaño reducido del buffer circular
+const int BUFFER_SIZE = 128;  
+byte* signalBuffer = nullptr; 
 int bufferHead = 0;
-int bufferCount = 0;
+byte bufferCount = 0; 
 bool isAcquiring = false;        
 unsigned long startTime = 0;     
 
 // Variables para las características de la señal
-// Usamos 'float' solo SI es necesario, de lo contrario, considera 'int'
 float frequency = 0.0;
-int amplitude = 0; // Cambiamos a 'int' ya que la amplitud será un valor entero
-// Usamos la clase F() para almacenar el String en la memoria flash
-const char waveformUnknown[] PROGMEM = "Desconocida"; 
-const char waveformSquare[] PROGMEM = "Cuadrada";
-const char waveformTriangle[] PROGMEM = "Triangular";
-const char* waveform = waveformUnknown; // Puntero al String actual
+int amplitude = 0; 
+const char* waveform = waveform;
 
-// Variables para antirrebote (sin cambios)
+// Variables para antirrebote
 unsigned long lastDebounceTime = 0; 
 unsigned long debounceDelay = 50;   
 int lastButtonStateStart = HIGH;
@@ -37,14 +32,30 @@ int lastButtonStateInfo = HIGH;
 int buttonStateStart = HIGH;
 int buttonStateInfo = HIGH;
 
+// Usamos la clase F() para almacenar el String en la memoria flash
+const char waveformUnknown[] PROGMEM = "Desconocida"; 
+const char waveformSquare[] PROGMEM = "Cuadrada";
+const char waveformTriangle[] PROGMEM = "Triangular";
+
 void setup() {
     pinMode(buttonPinStart, INPUT_PULLUP);
     pinMode(buttonPinInfo, INPUT_PULLUP);
-    Serial.begin(9600); // Inicializar la comunicación serial para depuración
+    Serial.begin(9600); 
     lcd.begin(16, 2);
-    lcd.print("Listo para");
+    lcd.print(F("Listo para"));
     lcd.setCursor(0, 1);
-    lcd.print("iniciar...");
+    lcd.print(F("iniciar..."));
+
+    // Asignar memoria dinámicamente para el buffer
+    signalBuffer = (byte*) malloc(BUFFER_SIZE * sizeof(byte)); 
+
+    if (signalBuffer == nullptr) {
+        lcd.clear();
+        lcd.print(F("Error: Memoria"));
+        lcd.setCursor(0, 1);
+        lcd.print(F("Insuficiente"));
+        while (true); 
+    }
 }
 
 void loop() {
@@ -92,7 +103,7 @@ void startAcquisition() {
         bufferCount = 0;
 
         lcd.clear();
-        lcd.print("Adquiriendo...");
+        lcd.print(F("Adquiriendo..."));
     }
 }
 
@@ -109,22 +120,20 @@ void acquireData() {
 void showInformation() {
     isAcquiring = false; 
 
-    // Verificar si se asignó memoria correctamente antes de analizar
     if (signalBuffer != nullptr) {
         analyzeSignal();
 
-        Serial.print("Frecuencia: "); Serial.println(frequency); // Depuración
-        Serial.print("Amplitud: "); Serial.println(amplitude);  // Depuración
-        Serial.print("Forma de Onda: "); Serial.println(waveform); // Depuración
+        Serial.print(F("Frecuencia: ")); Serial.println(frequency); 
+        Serial.print(F("Amplitud: ")); Serial.println(amplitude); 
+        Serial.print(F("Forma de Onda: ")); Serial.println(waveform); 
 
         lcd.clear();
-        lcd.print("Frec:"); lcd.print(frequency); lcd.print(" Hz");
+        lcd.print(F("Frec:")); lcd.print(frequency); lcd.print(F(" Hz"));
         lcd.setCursor(0, 1);
-        lcd.print("Amp:"); lcd.print(amplitude);
+        lcd.print(F("Amp:")); lcd.print(amplitude);
         lcd.setCursor(9, 1);
 
-        // Usamos la macro para cargar el String desde la memoria flash
-        lcd.print("F:"); 
+        lcd.print(F("F:")); 
         if (waveform == waveformUnknown) {
             lcd.print(F("Desconocida")); 
         } else if (waveform == waveformSquare) {
@@ -133,13 +142,13 @@ void showInformation() {
             lcd.print(F("Triangular"));
         }
     } else {
-        // Mostrar error en la pantalla LCD si no se pudo asignar memoria
         lcd.clear();
-        lcd.print("Error: Memoria");
+        lcd.print(F("Error: Memoria"));
         lcd.setCursor(0, 1);
-        lcd.print("Insuficiente");
+        lcd.print(F("Insuficiente"));
     }
 }
+
 
 void analyzeSignal() {
     // 1. Cálculo de Frecuencia (usando autocorrelación)
