@@ -37,6 +37,14 @@ Este proyecto implementa un sistema de adquisición y análisis de señales anal
 * **Manejo de errores:** Incluye verificaciones para evitar posibles fallos, como la falta de memoria al asignar el buffer.
 * **Interfaz de usuario sencilla:** Permite al usuario iniciar/detener la adquisición y visualizar los resultados mediante dos pulsadores.
 
+* **El código presentado utiliza memoria dinámica a través de la función malloc() para asignar espacio en tiempo de ejecución para el buffer circular signalBuffer. Este enfoque tiene ventajas y desventajas en el contexto de este software:
+
+* **Ventajas:
+
+* **Flexibilidad: La memoria dinámica permite ajustar el tamaño del buffer en tiempo de ejecución, lo que podría ser útil si el tamaño de la señal a analizar varía.
+Eficiencia: En escenarios donde el tamaño máximo del buffer es grande pero no siempre se utiliza por completo, la memoria dinámica puede ser más eficiente que reservar un buffer estático de tamaño fijo, lo que podría desperdiciar memoria
+
+
 ## Hardware requerido
 
 * Placa Arduino (compatible con la biblioteca LiquidCrystal)
