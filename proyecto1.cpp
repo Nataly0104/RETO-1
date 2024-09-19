@@ -1,4 +1,5 @@
 
+
 #include <LiquidCrystal.h>
 
 // Pines para los pulsadores y la pantalla LCD
@@ -10,7 +11,7 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 // Variables para la adquisición y análisis de la señal
 const int analogPin = A0;          
 
-// Tamaño reducido del buffer circular (ajusta según tus necesidades)
+// Tamaño reducido del buffer circular (ajusta según  necesidades)
 const int BUFFER_SIZE = 500;  
 int signalBuffer[BUFFER_SIZE]; // Usamos 'byte' en lugar de 'int' para ahorrar memoria
 int bufferHead = 0;
@@ -19,7 +20,7 @@ bool isAcquiring = false;
 unsigned long startTime = 0;     
 
 // Variables para las características de la señal
-// Usamos 'float' solo si es necesario, de lo contrario, considera 'int'
+// Usamos 'float' solo SI es necesario, de lo contrario, considera 'int'
 float frequency = 0.0;
 int amplitude = 0; // Cambiamos a 'int' ya que la amplitud será un valor entero
 // Usamos la clase F() para almacenar el String en la memoria flash
